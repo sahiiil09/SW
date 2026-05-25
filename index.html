@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance & Management System</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #d1d5db;
+            --table-header: #f9fafb;
+            --list-bg: #f9fafb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --rule-bg: #fffbeb;
+            --rule-border: #fef3c7;
+            --rule-text: #b45309;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --table-header: #334155;
+            --list-bg: #1e293b;
+            --rule-bg: #451a03;
+            --rule-border: #78350f;
+            --rule-text: #fde047;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background-color 0.2s, color 0.2s; }
+        body { background-color: var(--bg); color: var(--text); padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: var(--card); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2, h3 { margin-bottom: 20px; color: var(--primary); }
+        hr { margin: 20px 0; border: 0; border-top: 1px solid var(--border); }
+
+        .theme-container { display: flex; justify-content: flex-end; max-width: 1000px; margin: 0 auto 15px auto; }
+        .theme-btn { background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; }
+        input[type="text"], input[type="password"], textarea { width: 100%; padding: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 6px; font-size: 16px; }
+        button { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        button:hover { background: var(--primary-hover); }
+        button.btn-danger { background: var(--danger); }
+        button.btn-success { background: var(--success); }
+        button:disabled { background: #4fad57; cursor: not-allowed; opacity: 0.6; }
+
+        .nav-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+        .tab-btn { background: none; color: var(--text-secondary); padding: 8px 16px; border-radius: 4px; border: none; font-size: 16px; cursor: pointer; font-weight: 500; }
+        .tab-btn.active { background: var(--primary); color: white; }
+
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: var(--table-header); }
+        .list-item { background: var(--list-bg); padding: 15px; border-radius: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); border-left: 4px solid var(--primary); }
+        
+        .activity-box { background: #1e293b; color: #f8fafc; padding: 15px; border-radius: 6px; max-height: 200px; overflow-y: auto; font-family: monospace; }
+        .activity-item { margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; font-size: 14px; }
+        .rule-card { background: var(--rule-bg); border: 1px solid var(--rule-border); padding: 15px; border-radius: 6px; margin-bottom: 10px; color: var(--rule-text); }
+
+        .flex-space { display: flex; justify-content: space-between; align-items: center; }
+        .logout-btn { background: #374151; color: white; }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+<div class="theme-container">
+    <button class="theme-btn" id="theme-toggle-btn" onclick="toggleTheme()">🌓 Switch Theme</button>
+</div>
+
+<div class="container">
+    <div id="auth-section">
+        <h2>Welcome to, Shadow World</h2>
+        <div class="nav-tabs">
+            <button class="tab-btn active" id="tab-login" onclick="switchAuthTab('login')">Login</button>
+            <button class="tab-btn" id="tab-register" onclick="switchAuthTab('register')">New Member Register</button>
+        </div>
+
+        <div id="login-form" class="auth-panel">
+            <h3>Login</h3>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="login-username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="login-password" placeholder="Enter password">
+            </div>
+            <button onclick="handleLogin()">Login</button>
+        </div>
+
+        <div id="register-form" class="auth-panel" style="display:none;">
+            <h3>New Member Registration</h3>
+            <div class="form-group">
+                <label>Choose Username</label>
+                <input type="text" id="reg-username" placeholder="Create username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="reg-password" placeholder="Create password">
+            </div>
+            <button onclick="handleRegister()">Submit Request to Admin</button>
+        </div>
+    </div>
+
+    <div id="dashboard-section" style="display: none;">
+        <div class="flex-space">
+            <h2 id="welcome-text">Dashboard</h2>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </div>
+        
+        <div class="nav-tabs" id="dashboard-tabs"></div>
+
+        <div id="panel-requests" class="panel">
+            <h3>Pending Join Requests</h3>
+            <div id="requests-list"></div>
+        </div>
+
+        <div id="panel-admin-presenty" class="panel">
+            <h3>Overall Presenty Log</h3>
+            <table>
+                <thead>
+                    <tr><th>Member Name</th><th>Date & Time</th></tr>
+                </thead>
+                <tbody id="admin-presenty-list"></tbody>
+            </table>
+        </div>
+
+        <div id="panel-admin-rules" class="panel">
+            <h3>Manage System Rules</h3>
+            <div class="form-group">
+                <textarea id="new-rule-text" rows="3" placeholder="Type a new rule here..."></textarea>
+            </div>
+            <button onclick="addRule()">Add Rule</button>
+            <hr>
+            <div id="admin-rules-list"></div>
+        </div>
+
+        <div id="panel-admin-addmember" class="panel">
+            <h3>Directly Add New Member</h3>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="direct-username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="direct-password" placeholder="Password">
+            </div>
+            <button onclick="directAddMember()">Add Member</button>
+        </div>
+
+        <div id="panel-admin-allmembers" class="panel">
+            <h3>All Registered Members</h3>
+            <div id="all-members-list"></div>
+        </div>
+
+        <div id="panel-admin-restore" class="panel">
+            <h3>Restore / Permanently Delete Members</h3>
+            <div id="deleted-members-list"></div>
+        </div>
+
+        <div id="panel-user-presenty" class="panel">
+            <h3>Mark Your Presenty</h3>
+            <p style="margin-bottom: 15px; color: var(--text-secondary);">Note: You can only mark presenty once per day.</p>
+            <button id="mark-presenty-btn" onclick="markAttendance()">🙋‍♂️ Mark Active Today</button>
+            <hr>
+            <h4>Your Attendance History</h4>
+            <table>
+                <thead><tr><th>Date & Time</th></tr></thead>
+                <tbody id="user-presenty-history"></tbody>
+            </table>
+        </div>
+
+        <div id="panel-user-rules" class="panel">
+            <h3>System Rules & Guidelines</h3>
+            <div id="user-rules-list"></div>
+        </div>
+
+        <div id="panel-user-activity" class="panel">
+            <h3>Global System Activity</h3>
+            <p style="margin-bottom:10px; font-size:14px; color: var(--text-secondary);">Real-time logs:</p>
+            <div class="activity-box" id="activity-feed-box"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Firebase Configuration ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyBNTnScEta2Xda_S7mUfw3IXoI7A-0IxsI",
+        authDomain: "shadow-world-7c3d1.firebaseapp.com",
+        databaseURL: "https://shadow-world-7c3d1-default-rtdb.firebaseio.com",
+        projectId: "shadow-world-7c3d1",
+        storageBucket: "shadow-world-7c3d1.firebasestorage.app",
+        messagingSenderId: "1045120071491",
+        appId: "1:1045120071491:web:5d7b649724fd39ff8d61f6",
+        measurementId: "G-V1EP13TV5N"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let currentUser = null;
+
+    // --- Theme Logic ---
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('theme-toggle-btn').innerHTML = savedTheme === 'dark' ? "☀️ Light Mode" : "🌙 Dark Mode";
+    }
+
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        document.getElementById('theme-toggle-btn').innerHTML = newTheme === 'dark' ? "☀️ Light Mode" : "🌙 Dark Mode";
+    }
+
+    initTheme();
+
+    function switchAuthTab(type) {
+        document.getElementById('tab-login').classList.remove('active');
+        document.getElementById('tab-register').classList.remove('active');
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'none';
+        
+        if(type === 'login') {
+            document.getElementById('tab-login').classList.add('active');
+            document.getElementById('login-form').style.display = 'block';
+        } else {
+            document.getElementById('tab-register').classList.add('active');
+            document.getElementById('register-form').style.display = 'block';
+        }
+    }
+
+    function logActivity(text) {
+        let time = new Date().toLocaleString();
+        db.ref('activities').push(`[${time}] ${text}`);
+    }
+
+    function handleLogin() {
+        const u = document.getElementById('login-username').value.trim();
+        const p = document.getElementById('login-password').value.trim();
+
+        if(!u || !p) { alert("Please fill all fields"); return; }
+
+        if((u === 'sahil' || u === 'taskeen') && p === 'saheen') {
+            currentUser = { username: u, role: 'admin' };
+            launchDashboard();
+            return;
+        }
+
+        db.ref('users').once('value', snapshot => {
+            let users = [];
+            snapshot.forEach(child => { users.push(child.val()); });
+            let found = users.find(user => user.username === u && user.password === p);
+
+            if(found) {
+                currentUser = { username: u, role: 'user' };
+                launchDashboard();
+            } else {
+                db.ref('requests').once('value', reqSnap => {
+                    let reqs = [];
+                    reqSnap.forEach(c => { reqs.push(c.val()); });
+
+                    db.ref('deletedUsers').once('value', delSnap => {
+                        let deletedUsers = [];
+                        delSnap.forEach(c => { deletedUsers.push(c.val()); });
+
+                        if(reqs.some(r => r.username === u)) {
+                            alert("Your request is still pending admin approval!");
+                        } else if (deletedUsers.some(d => d.username === u)) {
+                            alert("Your account has been deactivated by the Admin.");
+                        } else {
+                            alert("Invalid Credentials.");
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    function handleRegister() {
+        const u = document.getElementById('reg-username').value.trim();
+        const p = document.getElementById('reg-password').value.trim();
+
+        if(!u || !p) { alert("Please fill all fields"); return; }
+        if(u === 'sahil' || u === 'taskeen') { alert("Reserved username."); return; }
+
+        db.ref('users').once('value', snap => {
+            let users = []; snap.forEach(c => { users.push(c.val()); });
+            db.ref('requests').once('value', reqSnap => {
+                let reqs = []; reqSnap.forEach(c => { reqs.push(c.val()); });
+
+                if(users.some(x=>x.username===u) || reqs.some(x=>x.username===u)) {
+                    alert("Username already taken!");
+                    return;
+                }
+
+                db.ref('requests').push({username: u, password: p});
+                logActivity(`New request from: "${u}"`);
+                alert("Request sent to Admin!");
+                
+                document.getElementById('reg-username').value = '';
+                document.getElementById('reg-password').value = '';
+                switchAuthTab('login');
+            });
+        });
+    }
+
+    function handleLogout() {
+        currentUser = null;
+        document.getElementById('dashboard-section').style.display = 'none';
+        document.getElementById('auth-section').style.display = 'block';
+    }
+
+    function launchDashboard() {
+        document.getElementById('auth-section').style.display = 'none';
+        document.getElementById('dashboard-section').style.display = 'block';
+        document.getElementById('welcome-text').innerText = `Welcome, ${currentUser.username} (${currentUser.role.toUpperCase()})`;
+
+        const tabsContainer = document.getElementById('dashboard-tabs');
+        if(currentUser.role === 'admin') {
+            tabsContainer.innerHTML = `
+                <button class="tab-btn" id="t-req" onclick="switchDashboardTab('requests')">Requests</button>
+                <button class="tab-btn" id="t-pres" onclick="switchDashboardTab('admin-presenty')">Presenty Log</button>
+                <button class="tab-btn" id="t-allm" onclick="switchDashboardTab('admin-allmembers')">All Members</button>
+                <button class="tab-btn" id="t-rest" onclick="switchDashboardTab('admin-restore')">Restore List</button>
+                <button class="tab-btn" id="t-rul" onclick="switchDashboardTab('admin-rules')">Manage Rules</button>
+                <button class="tab-btn" id="t-add" onclick="switchDashboardTab('admin-addmember')">Add Member</button>
+            `;
+            switchDashboardTab('requests');
+        } else {
+            tabsContainer.innerHTML = `
+                <button class="tab-btn" id="t-upres" onclick="switchDashboardTab('user-presenty')">Mark Presenty</button>
+                <button class="tab-btn" id="t-urul" onclick="switchDashboardTab('user-rules')">Rules</button>
+                <button class="tab-btn" id="t-uact" onclick="switchDashboardTab('user-activity')">Activity Feed</button>
+            `;
+            switchDashboardTab('user-presenty');
+        }
+    }
+
+    function switchDashboardTab(tabName) {
+        document.querySelectorAll('#dashboard-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+
+        if(tabName === 'requests') document.getElementById('t-req')?.classList.add('active');
+        if(tabName === 'admin-presenty') document.getElementById('t-pres')?.classList.add('active');
+        if(tabName === 'admin-rules') document.getElementById('t-rul')?.classList.add('active');
+        if(tabName === 'admin-addmember') document.getElementById('t-add')?.classList.add('active');
+        if(tabName === 'admin-allmembers') document.getElementById('t-allm')?.classList.add('active');
+        if(tabName === 'admin-restore') document.getElementById('t-rest')?.classList.add('active');
+        
+        if(tabName === 'user-presenty') document.getElementById('t-upres')?.classList.add('active');
+        if(tabName === 'user-rules') document.getElementById('t-urul')?.classList.add('active');
+        if(tabName === 'user-activity') document.getElementById('t-uact')?.classList.add('active');
+
+        document.getElementById(`panel-${tabName}`).style.display = 'block';
+
+        if(tabName === 'requests') loadRequests();
+        if(tabName === 'admin-presenty') loadAdminPresenty();
+        if(tabName === 'admin-rules') loadAdminRules();
+        if(tabName === 'user-presenty') loadUserPresenty();
+        if(tabName === 'user-rules') loadUserRules();
+        if(tabName === 'user-activity') loadActivityFeed();
+        if(tabName === 'admin-allmembers') loadAllMembers();
+        if(tabName === 'admin-restore') loadDeletedMembers();
+    }
+
+    function loadRequests() {
+        const container = document.getElementById('requests-list');
+        db.ref('requests').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) { container.innerHTML = '<p>No pending requests.</p>'; return; }
+            snapshot.forEach(child => {
+                let r = child.val();
+                let key = child.key;
+                container.innerHTML += `<div class="list-item"><span><strong>${r.username}</strong></span><div><button onclick="actionRequest('${key}', 'accept')" class="btn-success" style="margin-right:5px;">Accept</button><button onclick="actionRequest('${key}', 'reject')" class="btn-danger">Reject</button></div></div>`;
+            });
+        });
+    }
+
+    function actionRequest(key, action) {
+        db.ref('requests/' + key).once('value', snapshot => {
+            let targetUser = snapshot.val();
+            if(action === 'accept') {
+                db.ref('users').push(targetUser);
+                logActivity(`Approved: "${targetUser.username}"`);
+            } else {
+                logActivity(`Rejected: "${targetUser.username}"`);
+            }
+            db.ref('requests/' + key).remove();
+            loadRequests();
+        });
+    }
+
+    function loadAllMembers() {
+        const container = document.getElementById('all-members-list');
+        db.ref('users').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) { container.innerHTML = '<p>No registered members found.</p>'; return; }
+            snapshot.forEach(child => {
+                let u = child.val();
+                let key = child.key;
+                container.innerHTML += `
+                    <div class="list-item">
+                        <span><strong>${u.username}</strong></span>
+                        <button class="btn-danger" onclick="temporaryDeleteMember('${key}')">Delete Member</button>
+                    </div>`;
+            });
+        });
+    }
+
+    function temporaryDeleteMember(key) {
+        if(!confirm("Are you sure you want to delete this member? (They will move to Restore List)")) return;
+        
+        db.ref('users/' + key).once('value', snapshot => {
+            let targetUser = snapshot.val();
+            db.ref('deletedUsers').push(targetUser);
+            db.ref('users/' + key).remove();
+            logActivity(`Moved to Trash: "${targetUser.username}"`);
+            loadAllMembers();
+        });
+    }
+
+    function loadDeletedMembers() {
+        const container = document.getElementById('deleted-members-list');
+        db.ref('deletedUsers').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) { container.innerHTML = '<p>Trash is empty. No members to restore.</p>'; return; }
+            snapshot.forEach(child => {
+                let u = child.val();
+                let key = child.key;
+                container.innerHTML += `
+                    <div class="list-item">
+                        <span><strong>${u.username}</strong></span>
+                        <div>
+                            <button class="btn-success" style="margin-right:5px;" onclick="restoreMember('${key}')">Restore</button>
+                            <button class="btn-danger" onclick="permanentDeleteMember('${key}')">Delete Permanently</button>
+                        </div>
+                    </div>`;
+            });
+        });
+    }
+
+    function restoreMember(key) {
+        db.ref('deletedUsers/' + key).once('value', snapshot => {
+            let targetUser = snapshot.val();
+            db.ref('users').push(targetUser);
+            db.ref('deletedUsers/' + key).remove();
+            logActivity(`Restored member: "${targetUser.username}"`);
+            alert(`"${targetUser.username}" has been restored successfully!`);
+            loadDeletedMembers();
+        });
+    }
+
+    function permanentDeleteMember(key) {
+        if(!confirm("Warning! This will permanently delete the user. Proceed?")) return;
+        
+        db.ref('deletedUsers/' + key).once('value', snapshot => {
+            let targetUser = snapshot.val();
+            db.ref('deletedUsers/' + key).remove();
+            logActivity(`Permanently deleted: "${targetUser.username}"`);
+            alert(`"${targetUser.username}" deleted forever.`);
+            loadDeletedMembers();
+        });
+    }
+
+    function directAddMember() {
+        const u = document.getElementById('direct-username').value.trim();
+        const p = document.getElementById('direct-password').value.trim();
+        if(!u || !p) { alert("Fill all fields"); return; }
+        
+        db.ref('users').push({username: u, password: p});
+        logActivity(`Directly added: "${u}"`);
+        alert("Member Added!");
+        document.getElementById('direct-username').value = '';
+        document.getElementById('direct-password').value = '';
+    }
+
+    function loadAdminPresenty() {
+        const container = document.getElementById('admin-presenty-list');
+        db.ref('attendance').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) { container.innerHTML = '<tr><td colspan="2">No records.</td></tr>'; return; }
+            
+            let arr = [];
+            snapshot.forEach(child => { arr.unshift(child.val()); });
+            arr.forEach(a => { container.innerHTML += `<tr><td><strong>${a.username}</strong></td><td>${a.timestamp}</td></tr>`; });
+        });
+    }
+
+    function loadAdminRules() {
+        const container = document.getElementById('admin-rules-list');
+        db.ref('rules').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) return;
+            snapshot.forEach(child => {
+                container.innerHTML += `<div class="list-item"><span>${child.val()}</span><button class="btn-danger" onclick="deleteRule('${child.key}')">Delete</button></div>`;
+            });
+        });
+    }
+
+    function addRule() {
+        const txt = document.getElementById('new-rule-text').value.trim();
+        if(!txt) return;
+        db.ref('rules').push(txt);
+        document.getElementById('new-rule-text').value = '';
+        logActivity(`Added new rule`);
+        loadAdminRules();
+    }
+
+    function deleteRule(key) {
+        db.ref('rules/' + key).remove();
+        logActivity(`Deleted a rule`);
+        loadAdminRules();
+    }
+
+    function loadUserPresenty() {
+        const btn = document.getElementById('mark-presenty-btn');
+        const historyContainer = document.getElementById('user-presenty-history');
+        const todayStr = new Date().toDateString();
+
+        db.ref('attendance').once('value', snapshot => {
+            let att = [];
+            snapshot.forEach(child => { att.push(child.val()); });
+
+            const alreadyMarked = att.some(a => a.username === currentUser.username && a.dateOnly === todayStr);
+            if(alreadyMarked) {
+                btn.disabled = true;
+                btn.innerText = "✓ Presenty Marked For Today";
+            } else {
+                btn.disabled = false;
+                btn.innerText = "🙋‍♂️ Mark Active Today";
+            }
+
+            historyContainer.innerHTML = '';
+            const myHistory = att.filter(a => a.username === currentUser.username).reverse();
+            if(myHistory.length === 0) { historyContainer.innerHTML = '<tr><td>No logs yet.</td></tr>'; return; }
+            myHistory.forEach(h => { historyContainer.innerHTML += `<tr><td>${h.timestamp}</td></tr>`; });
+        });
+    }
+
+    function markAttendance() {
+        const todayStr = new Date().toDateString();
+        const timeStr = new Date().toLocaleString();
+
+        db.ref('attendance').push({ username: currentUser.username, timestamp: timeStr, dateOnly: todayStr });
+        logActivity(`Member "${currentUser.username}" marked presence.`);
+        alert("Attendance recorded!");
+        loadUserPresenty();
+    }
+
+    function loadUserRules() {
+        const container = document.getElementById('user-rules-list');
+        db.ref('rules').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) { container.innerHTML = '<p>No rules.</p>'; return; }
+            snapshot.forEach(child => { container.innerHTML += `<div class="rule-card">${child.val()}</div>`; });
+        });
+    }
+
+    function loadActivityFeed() {
+        const box = document.getElementById('activity-feed-box');
+        db.ref('activities').limitToLast(30).once('value', snapshot => {
+            box.innerHTML = '';
+            let acts = [];
+            snapshot.forEach(child => { acts.unshift(child.val()); });
+            acts.forEach(a => { box.innerHTML += `<div class="activity-item">${a}</div>`; });
+        });
+    }
+</script>
+</body>
+</html>
