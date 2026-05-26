@@ -3,78 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance & Management System</title>
+    <title>Shadow World & Management System</title>
     <style>
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
-            --bg: #f3f4f6;
-            --card: #ffffff;
-            --text: #1f2937;
-            --text-secondary: #6b7280;
-            --border: #d1d5db;
-            --table-header: #f9fafb;
-            --list-bg: #f9fafb;
+            /* Advanced Fluid iOS Mesh Gradient */
+            --bg: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd, #c2e9fb);
+            --bg-size: 400% 400%;
+            --card: rgba(255, 255, 255, 0.45);
+            --card-border: rgba(255, 255, 255, 0.7);
+            --text: #111827;
+            --text-secondary: #374151;
+            --border: rgba(255, 255, 255, 0.4);
+            --table-header: rgba(255, 255, 255, 0.6);
+            --list-bg: rgba(255, 255, 255, 0.3);
             --success: #10b981;
             --danger: #ef4444;
-            --rule-bg: #fffbeb;
-            --rule-border: #fef3c7;
+            --rule-bg: rgba(254, 243, 199, 0.6);
+            --rule-border: rgba(252, 211, 77, 0.7);
             --rule-text: #b45309;
+            --input-bg: rgba(255, 255, 255, 0.5);
         }
 
         [data-theme="dark"] {
-            --bg: #0f172a;
-            --card: #1e293b;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            /* Cyberpunk Cinematic Dark Mesh Gradient */
+            --bg: linear-gradient(-45deg, #0f172a, #1e1b4b, #311042, #081426, #030712);
+            --bg-size: 400% 400%;
+            --card: rgba(15, 23, 42, 0.5);
+            --card-border: rgba(255, 255, 255, 0.15);
             --text: #f8fafc;
-            --text-secondary: #94a3b8;
-            --border: #334155;
-            --table-header: #334155;
-            --list-bg: #1e293b;
-            --rule-bg: #451a03;
-            --rule-border: #78350f;
+            --text-secondary: #cbd5e1;
+            --border: rgba(255, 255, 255, 0.1);
+            --table-header: rgba(15, 23, 42, 0.7);
+            --list-bg: rgba(30, 41, 59, 0.5);
+            --rule-bg: rgba(69, 26, 3, 0.5);
+            --rule-border: rgba(120, 53, 15, 0.6);
             --rule-text: #fde047;
+            --input-bg: rgba(15, 23, 42, 0.5);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background-color 0.2s, color 0.2s; }
-        body { background-color: var(--bg); color: var(--text); padding: 20px; }
-        .container { max-width: 1000px; margin: 0 auto; background: var(--card); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h2, h3 { margin-bottom: 20px; color: var(--primary); }
-        hr { margin: 20px 0; border: 0; border-top: 1px solid var(--border); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+        
+        body { 
+            background: var(--bg); 
+            background-size: var(--bg-size);
+            animation: fluidGradient 18s ease infinite;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text); 
+            padding: 40px 20px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
 
-        .theme-container { display: flex; justify-content: flex-end; max-width: 1000px; margin: 0 auto 15px auto; }
-        .theme-btn { background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; }
+        /* Subtly moving background for dynamic mesh look */
+        @keyframes fluidGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; }
-        input[type="text"], input[type="password"], textarea { width: 100%; padding: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 6px; font-size: 16px; }
-        button { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
-        button:hover { background: var(--primary-hover); }
-        button.btn-danger { background: var(--danger); }
-        button.btn-success { background: var(--success); }
-        button:disabled { background: #4fad57; cursor: not-allowed; opacity: 0.6; }
+        .theme-container { display: flex; justify-content: flex-end; max-width: 1000px; width: 100%; margin: 0 auto 20px auto; }
+        
+        /* Premium iOS Pill Toggle with increased contrast */
+        .theme-btn { 
+            background: var(--card); 
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            color: var(--text); 
+            border: 1px solid var(--card-border); 
+            padding: 10px 20px; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            font-weight: 600; 
+            box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .theme-btn:hover { transform: translateY(-1.5px); box-shadow: 0 6px 22px rgba(0,0,0,0.15); }
 
-        .nav-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
-        .tab-btn { background: none; color: var(--text-secondary); padding: 8px 16px; border-radius: 4px; border: none; font-size: 16px; cursor: pointer; font-weight: 500; }
-        .tab-btn.active { background: var(--primary); color: white; }
+        /* True iPhone Glassmorphism Container with deep depth and vibrant contrast */
+        .container { 
+            max-width: 1000px; 
+            width: 100%;
+            margin: 0 auto; 
+            background: var(--card); 
+            backdrop-filter: blur(px) saturate(220%);
+            -webkit-backdrop-filter: blur(35px) saturate(220%);
+            padding: 40px; 
+            border-radius: 28px; 
+            border: 1px solid var(--card-border);
+            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.15), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.25); 
+        }
+
+        h2, h3 { margin-bottom: 24px; color: var(--text); font-weight: 700; letter-spacing: -0.9px; }
+        h2 { font-size: 34px; }
+        hr { margin: 25px 0; border: 0; border-top: 1px solid var(--border); }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--text); opacity: 0.95; }
+        
+        /* Sleek Glass Inputs with textured background */
+        input[type="text"], input[type="password"], textarea { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 1px solid var(--border); 
+            background: var(--input-bg); 
+            color: var(--text); 
+            border-radius: 14px; 
+            font-size: 16px; 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            outline: none;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
+        }
+        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4.5px rgba(79, 70, 229, 0.25); background: rgba(255, 255, 255, 0.65); }
+        [data-theme="dark"] input:focus, [data-theme="dark"] textarea:focus { background: rgba(15, 23, 42, 0.65); }
+
+        /* iOS Solid Accent Buttons with increased shadow */
+        button { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 14px 30px; 
+            border-radius: 14px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: 600; 
+            box-shadow: 0 5px 16px rgba(79, 70, 229, 0.35);
+        }
+        button:hover { background: var(--primary-hover); transform: translateY(-1.5px); box-shadow: 0 7px 24px rgba(79, 70, 229, 0.45); }
+        button:active { transform: translateY(0); }
+        button.btn-danger { background: var(--danger); box-shadow: 0 5px 16px rgba(239, 68, 68, 0.35); }
+        button.btn-danger:hover { background: #dc2626; box-shadow: 0 7px 24px rgba(239, 68, 68, 0.45); }
+        button.btn-success { background: var(--success); box-shadow: 0 5px 16px rgba(16, 185, 129, 0.35); }
+        button.btn-success:hover { background: #059669; box-shadow: 0 7px 24px rgba(16, 185, 129, 0.45); }
+        button:disabled { background: #9ca3af !important; cursor: not-allowed; opacity: 0.6; box-shadow: none !important; }
+
+        /* iOS Segmented Controls (Tabs) with enhanced contrast */
+        .nav-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 25px; background: rgba(0,0,0,0.08); padding: 7px; border-radius: 18px; border: none; }
+        [data-theme="dark"] .nav-tabs { background: rgba(255,255,255,0.08); }
+        
+        .tab-btn { background: transparent; color: var(--text-secondary); padding: 11px 22px; border-radius: 14px; border: none; font-size: 15px; cursor: pointer; font-weight: 600; flex: 1; text-align: center; min-width: 120px; }
+        .tab-btn:hover { color: var(--text); }
+        .tab-btn.active { background: #ffffff; color: #111827; box-shadow: 0 5px 14px rgba(0,0,0,0.1); }
+        [data-theme="dark"] .tab-btn.active { background: rgba(255,255,255,0.18); color: #ffffff; box-shadow: 0 5px 14px rgba(0,0,0,0.25); }
 
         .panel { display: none; }
         .panel.active { display: block; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background-color: var(--table-header); }
-        .list-item { background: var(--list-bg); padding: 15px; border-radius: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); border-left: 4px solid var(--primary); }
+        /* Glass Tables with borders */
+        table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 20px; border-radius: 18px; overflow: hidden; background: rgba(255,255,255,0.2); border: 1px solid var(--border); }
+        [data-theme="dark"] table { background: rgba(0,0,0,0.2); }
+        th, td { padding: 18px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: var(--table-header); font-weight: 600; color: var(--text); }
+        tr:last-child td { border-bottom: none; }
         
-        .activity-box { background: #1e293b; color: #f8fafc; padding: 15px; border-radius: 6px; max-height: 200px; overflow-y: auto; font-family: monospace; }
-        .activity-item { margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; font-size: 14px; }
-        .rule-card { background: var(--rule-bg); border: 1px solid var(--rule-border); padding: 15px; border-radius: 6px; margin-bottom: 10px; color: var(--rule-text); }
+        /* Premium Floating Glass Cards with true depth */
+        .list-item { background: var(--list-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 20px; border-radius: 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); border-left: 7px solid var(--primary); box-shadow: 0 5px 16px rgba(0,0,0,0.04); }
+        
+        .activity-box { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); color: #38bdf8; padding: 22px; border-radius: 20px; max-height: 280px; overflow-y: auto; font-family: 'Courier New', Courier, monospace; border: 1px solid rgba(255,255,255,0.06); }
+        .activity-item { margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px; font-size: 14px; color: #e2e8f0; }
+        .rule-card { background: var(--rule-bg); border: 1px solid var(--rule-border); padding: 20px; border-radius: 20px; margin-bottom: 16px; color: var(--rule-text); font-weight: 500; box-shadow: 0 5px 16px rgba(0,0,0,0.04); }
 
-        .flex-space { display: flex; justify-content: space-between; align-items: center; }
-        .logout-btn { background: #374151; color: white; }
+        .flex-space { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .logout-btn { background: rgba(259, 255, 255, 0.25); color: var(--text); border: 1px solid var(--border); box-shadow: 0 5px 16px rgba(0,0,0,0.04); }
+        [data-theme="dark"] .logout-btn { background: rgba(255, 255, 255, 0.12); }
+        .logout-btn:hover { background: rgba(0, 0, 0, 0.08); }
+        [data-theme="dark"] .logout-btn:hover { background: rgba(255, 255, 255, 0.2); }
     </style>
-
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -199,24 +304,6 @@
 </div>
 
 <script>
-    // --- Firebase Configuration ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyBNTnScEta2Xda_S7mUfw3IXoI7A-0IxsI",
-        authDomain: "shadow-world-7c3d1.firebaseapp.com",
-        databaseURL: "https://shadow-world-7c3d1-default-rtdb.firebaseio.com",
-        projectId: "shadow-world-7c3d1",
-        storageBucket: "shadow-world-7c3d1.firebasestorage.app",
-        messagingSenderId: "1045120071491",
-        appId: "1:1045120071491:web:5d7b649724fd39ff8d61f6",
-        measurementId: "G-V1EP13TV5N"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    let currentUser = null;
-
     // --- Theme Logic ---
     function initTheme() {
         const savedTheme = localStorage.getItem('theme') || 'light';
@@ -232,7 +319,19 @@
         document.getElementById('theme-toggle-btn').innerHTML = newTheme === 'dark' ? "☀️ Light Mode" : "🌙 Dark Mode";
     }
 
+    // --- Storage Fix (Updated to support trash/deleted array) ---
+    function initStorage() {
+        if(!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
+        if(!localStorage.getItem('deletedUsers')) localStorage.setItem('deletedUsers', JSON.stringify([]));
+        if(!localStorage.getItem('requests')) localStorage.setItem('requests', JSON.stringify([]));
+        if(!localStorage.getItem('attendance')) localStorage.setItem('attendance', JSON.stringify([]));
+        if(!localStorage.getItem('rules')) localStorage.setItem('rules', JSON.stringify(["Rule 1: Mark presenty daily.", "Rule 2: Follow admin guide."]));
+        if(!localStorage.getItem('activities')) localStorage.setItem('activities', JSON.stringify(["System Ready."]));
+    }
+
     initTheme();
+    initStorage();
+    let currentUser = null;
 
     function switchAuthTab(type) {
         document.getElementById('tab-login').classList.remove('active');
@@ -250,8 +349,10 @@
     }
 
     function logActivity(text) {
+        let acts = JSON.parse(localStorage.getItem('activities')) || [];
         let time = new Date().toLocaleString();
-        db.ref('activities').push(`[${time}] ${text}`);
+        acts.unshift(`[${time}] ${text}`);
+        localStorage.setItem('activities', JSON.stringify(acts));
     }
 
     function handleLogin() {
@@ -266,34 +367,24 @@
             return;
         }
 
-        db.ref('users').once('value', snapshot => {
-            let users = [];
-            snapshot.forEach(child => { users.push(child.val()); });
-            let found = users.find(user => user.username === u && user.password === p);
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let found = users.find(user => user.username === u && user.password === p);
 
-            if(found) {
-                currentUser = { username: u, role: 'user' };
-                launchDashboard();
+        if(found) {
+            currentUser = { username: u, role: 'user' };
+            launchDashboard();
+        } else {
+            let reqs = JSON.parse(localStorage.getItem('requests')) || [];
+            let deletedUsers = JSON.parse(localStorage.getItem('deletedUsers')) || [];
+            
+            if(reqs.some(r => r.username === u)) {
+                alert("Your request is still pending admin approval!");
+            } else if (deletedUsers.some(d => d.username === u)) {
+                alert("Your account has been deactivated by the Admin.");
             } else {
-                db.ref('requests').once('value', reqSnap => {
-                    let reqs = [];
-                    reqSnap.forEach(c => { reqs.push(c.val()); });
-
-                    db.ref('deletedUsers').once('value', delSnap => {
-                        let deletedUsers = [];
-                        delSnap.forEach(c => { deletedUsers.push(c.val()); });
-
-                        if(reqs.some(r => r.username === u)) {
-                            alert("Your request is still pending admin approval!");
-                        } else if (deletedUsers.some(d => d.username === u)) {
-                            alert("Your account has been deactivated by the Admin.");
-                        } else {
-                            alert("Invalid Credentials.");
-                        }
-                    });
-                });
+                alert("Invalid Credentials.");
             }
-        });
+        }
     }
 
     function handleRegister() {
@@ -303,25 +394,22 @@
         if(!u || !p) { alert("Please fill all fields"); return; }
         if(u === 'sahil' || u === 'taskeen') { alert("Reserved username."); return; }
 
-        db.ref('users').once('value', snap => {
-            let users = []; snap.forEach(c => { users.push(c.val()); });
-            db.ref('requests').once('value', reqSnap => {
-                let reqs = []; reqSnap.forEach(c => { reqs.push(c.val()); });
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let reqs = JSON.parse(localStorage.getItem('requests')) || [];
 
-                if(users.some(x=>x.username===u) || reqs.some(x=>x.username===u)) {
-                    alert("Username already taken!");
-                    return;
-                }
+        if(users.some(x=>x.username===u) || reqs.some(x=>x.username===u)) {
+            alert("Username already taken!");
+            return;
+        }
 
-                db.ref('requests').push({username: u, password: p});
-                logActivity(`New request from: "${u}"`);
-                alert("Request sent to Admin!");
-                
-                document.getElementById('reg-username').value = '';
-                document.getElementById('reg-password').value = '';
-                switchAuthTab('login');
-            });
-        });
+        reqs.push({username: u, password: p});
+        localStorage.setItem('requests', JSON.stringify(reqs));
+        logActivity(`New request from: "${u}"`);
+        alert("Request sent to Admin!");
+        
+        document.getElementById('reg-username').value = '';
+        document.getElementById('reg-password').value = '';
+        switchAuthTab('login');
     }
 
     function handleLogout() {
@@ -385,109 +473,120 @@
 
     function loadRequests() {
         const container = document.getElementById('requests-list');
-        db.ref('requests').once('value', snapshot => {
-            container.innerHTML = '';
-            if(!snapshot.exists()) { container.innerHTML = '<p>No pending requests.</p>'; return; }
-            snapshot.forEach(child => {
-                let r = child.val();
-                let key = child.key;
-                container.innerHTML += `<div class="list-item"><span><strong>${r.username}</strong></span><div><button onclick="actionRequest('${key}', 'accept')" class="btn-success" style="margin-right:5px;">Accept</button><button onclick="actionRequest('${key}', 'reject')" class="btn-danger">Reject</button></div></div>`;
-            });
+        const reqs = JSON.parse(localStorage.getItem('requests')) || [];
+        container.innerHTML = '';
+        if(reqs.length === 0) { container.innerHTML = '<p>No pending requests.</p>'; return; }
+        reqs.forEach((r, idx) => {
+            container.innerHTML += `<div class="list-item"><span><strong>${r.username}</strong></span><div><button onclick="actionRequest(${idx}, 'accept')" class="btn-success" style="margin-right:5px;">Accept</button><button onclick="actionRequest(${idx}, 'reject')" class="btn-danger">Reject</button></div></div>`;
         });
     }
 
-    function actionRequest(key, action) {
-        db.ref('requests/' + key).once('value', snapshot => {
-            let targetUser = snapshot.val();
-            if(action === 'accept') {
-                db.ref('users').push(targetUser);
-                logActivity(`Approved: "${targetUser.username}"`);
-            } else {
-                logActivity(`Rejected: "${targetUser.username}"`);
-            }
-            db.ref('requests/' + key).remove();
-            loadRequests();
-        });
+    function actionRequest(index, action) {
+        let reqs = JSON.parse(localStorage.getItem('requests')) || [];
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let targetUser = reqs[index];
+
+        if(action === 'accept') {
+            users.push(targetUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            logActivity(`Approved: "${targetUser.username}"`);
+        } else {
+            logActivity(`Rejected: "${targetUser.username}"`);
+        }
+        reqs.splice(index, 1);
+        localStorage.setItem('requests', JSON.stringify(reqs));
+        loadRequests();
     }
 
+    // --- New: Load All Active Members & Temporary Delete ---
     function loadAllMembers() {
         const container = document.getElementById('all-members-list');
-        db.ref('users').once('value', snapshot => {
-            container.innerHTML = '';
-            if(!snapshot.exists()) { container.innerHTML = '<p>No registered members found.</p>'; return; }
-            snapshot.forEach(child => {
-                let u = child.val();
-                let key = child.key;
-                container.innerHTML += `
-                    <div class="list-item">
-                        <span><strong>${u.username}</strong></span>
-                        <button class="btn-danger" onclick="temporaryDeleteMember('${key}')">Delete Member</button>
-                    </div>`;
-            });
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        container.innerHTML = '';
+        if(users.length === 0) { container.innerHTML = '<p>No registered members found.</p>'; return; }
+        
+        users.forEach((u, idx) => {
+            container.innerHTML += `
+                <div class="list-item">
+                    <span><strong>${u.username}</strong></span>
+                    <button class="btn-danger" onclick="temporaryDeleteMember(${idx})">Delete Member</button>
+                </div>`;
         });
     }
 
-    function temporaryDeleteMember(key) {
+    function temporaryDeleteMember(index) {
         if(!confirm("Are you sure you want to delete this member? (They will move to Restore List)")) return;
         
-        db.ref('users/' + key).once('value', snapshot => {
-            let targetUser = snapshot.val();
-            db.ref('deletedUsers').push(targetUser);
-            db.ref('users/' + key).remove();
-            logActivity(`Moved to Trash: "${targetUser.username}"`);
-            loadAllMembers();
-        });
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let deletedUsers = JSON.parse(localStorage.getItem('deletedUsers')) || [];
+        
+        let targetUser = users.splice(index, 1)[0];
+        deletedUsers.push(targetUser);
+        
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('deletedUsers', JSON.stringify(deletedUsers));
+        
+        logActivity(`Moved to Trash: "${targetUser.username}"`);
+        loadAllMembers();
     }
 
+    // --- New: Load Restore Trash List & Functions ---
     function loadDeletedMembers() {
         const container = document.getElementById('deleted-members-list');
-        db.ref('deletedUsers').once('value', snapshot => {
-            container.innerHTML = '';
-            if(!snapshot.exists()) { container.innerHTML = '<p>Trash is empty. No members to restore.</p>'; return; }
-            snapshot.forEach(child => {
-                let u = child.val();
-                let key = child.key;
-                container.innerHTML += `
-                    <div class="list-item">
-                        <span><strong>${u.username}</strong></span>
-                        <div>
-                            <button class="btn-success" style="margin-right:5px;" onclick="restoreMember('${key}')">Restore</button>
-                            <button class="btn-danger" onclick="permanentDeleteMember('${key}')">Delete Permanently</button>
-                        </div>
-                    </div>`;
-            });
-        });
-    }
-
-    function restoreMember(key) {
-        db.ref('deletedUsers/' + key).once('value', snapshot => {
-            let targetUser = snapshot.val();
-            db.ref('users').push(targetUser);
-            db.ref('deletedUsers/' + key).remove();
-            logActivity(`Restored member: "${targetUser.username}"`);
-            alert(`"${targetUser.username}" has been restored successfully!`);
-            loadDeletedMembers();
-        });
-    }
-
-    function permanentDeleteMember(key) {
-        if(!confirm("Warning! This will permanently delete the user. Proceed?")) return;
+        const deletedUsers = JSON.parse(localStorage.getItem('deletedUsers')) || [];
+        container.innerHTML = '';
+        if(deletedUsers.length === 0) { container.innerHTML = '<p>Trash is empty. No members to restore.</p>'; return; }
         
-        db.ref('deletedUsers/' + key).once('value', snapshot => {
-            let targetUser = snapshot.val();
-            db.ref('deletedUsers/' + key).remove();
-            logActivity(`Permanently deleted: "${targetUser.username}"`);
-            alert(`"${targetUser.username}" deleted forever.`);
-            loadDeletedMembers();
+        deletedUsers.forEach((u, idx) => {
+            container.innerHTML += `
+                <div class="list-item">
+                    <span><strong>${u.username}</strong></span>
+                    <div>
+                        <button class="btn-success" style="margin-right:5px;" onclick="restoreMember(${idx})">Restore</button>
+                        <button class="btn-danger" onclick="permanentDeleteMember(${idx})">Delete Permanently</button>
+                    </div>
+                </div>`;
         });
+    }
+
+    function restoreMember(index) {
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let deletedUsers = JSON.parse(localStorage.getItem('deletedUsers')) || [];
+        
+        let targetUser = deletedUsers.splice(index, 1)[0];
+        users.push(targetUser);
+        
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('deletedUsers', JSON.stringify(deletedUsers));
+        
+        logActivity(`Restored member: "${targetUser.username}"`);
+        alert(`"${targetUser.username}" has been restored successfully!`);
+        loadDeletedMembers();
+    }
+
+    function permanentDeleteMember(index) {
+        if(!confirm("Warning! This will permanently delete the user. This action cannot be undone. Proceed?")) return;
+        
+        let deletedUsers = JSON.parse(localStorage.getItem('deletedUsers')) || [];
+        let targetUser = deletedUsers.splice(index, 1)[0];
+        
+        localStorage.setItem('deletedUsers', JSON.stringify(deletedUsers));
+        
+        logActivity(`Permanently deleted: "${targetUser.username}"`);
+        alert(`"${targetUser.username}" deleted forever.`);
+        loadDeletedMembers();
     }
 
     function directAddMember() {
         const u = document.getElementById('direct-username').value.trim();
         const p = document.getElementById('direct-password').value.trim();
         if(!u || !p) { alert("Fill all fields"); return; }
+        let users = JSON.parse(localStorage.getItem('users')) || [];
         
-        db.ref('users').push({username: u, password: p});
+        if(users.some(x=>x.username===u)) { alert("Username already exists!"); return; }
+        
+        users.push({username: u, password: p});
+        localStorage.setItem('users', JSON.stringify(users));
         logActivity(`Directly added: "${u}"`);
         alert("Member Added!");
         document.getElementById('direct-username').value = '';
@@ -496,72 +595,67 @@
 
     function loadAdminPresenty() {
         const container = document.getElementById('admin-presenty-list');
-        db.ref('attendance').once('value', snapshot => {
-            container.innerHTML = '';
-            if(!snapshot.exists()) { container.innerHTML = '<tr><td colspan="2">No records.</td></tr>'; return; }
-            
-            let arr = [];
-            snapshot.forEach(child => { arr.unshift(child.val()); });
-            arr.forEach(a => { container.innerHTML += `<tr><td><strong>${a.username}</strong></td><td>${a.timestamp}</td></tr>`; });
-        });
+        const att = JSON.parse(localStorage.getItem('attendance')) || [];
+        container.innerHTML = att.length === 0 ? '<tr><td colspan="2">No records.</td></tr>' : '';
+        att.forEach(a => { container.innerHTML += `<tr><td><strong>${a.username}</strong></td><td>${a.timestamp}</td></tr>`; });
     }
 
     function loadAdminRules() {
         const container = document.getElementById('admin-rules-list');
-        db.ref('rules').once('value', snapshot => {
-            container.innerHTML = '';
-            if(!snapshot.exists()) return;
-            snapshot.forEach(child => {
-                container.innerHTML += `<div class="list-item"><span>${child.val()}</span><button class="btn-danger" onclick="deleteRule('${child.key}')">Delete</button></div>`;
-            });
+        const rules = JSON.parse(localStorage.getItem('rules')) || [];
+        container.innerHTML = '';
+        rules.forEach((r, idx) => {
+            container.innerHTML += `<div class="list-item"><span>${r}</span><button class="btn-danger" onclick="deleteRule(${idx})">Delete</button></div>`;
         });
     }
 
     function addRule() {
         const txt = document.getElementById('new-rule-text').value.trim();
         if(!txt) return;
-        db.ref('rules').push(txt);
+        let rules = JSON.parse(localStorage.getItem('rules'));
+        rules.push(txt);
+        localStorage.setItem('rules', JSON.stringify(rules));
         document.getElementById('new-rule-text').value = '';
         logActivity(`Added new rule`);
         loadAdminRules();
     }
 
-    function deleteRule(key) {
-        db.ref('rules/' + key).remove();
+    function deleteRule(index) {
+        let rules = JSON.parse(localStorage.getItem('rules'));
+        rules.splice(index, 1);
+        localStorage.setItem('rules', JSON.stringify(rules));
         logActivity(`Deleted a rule`);
         loadAdminRules();
     }
 
     function loadUserPresenty() {
+        const att = JSON.parse(localStorage.getItem('attendance')) || [];
         const btn = document.getElementById('mark-presenty-btn');
         const historyContainer = document.getElementById('user-presenty-history');
         const todayStr = new Date().toDateString();
 
-        db.ref('attendance').once('value', snapshot => {
-            let att = [];
-            snapshot.forEach(child => { att.push(child.val()); });
+        const alreadyMarked = att.some(a => a.username === currentUser.username && a.dateOnly === todayStr);
+        if(alreadyMarked) {
+            btn.disabled = true;
+            btn.innerText = "✓ Presenty Marked For Today";
+        } else {
+            btn.disabled = false;
+            btn.innerText = "🙋‍♂️ Mark Active Today";
+        }
 
-            const alreadyMarked = att.some(a => a.username === currentUser.username && a.dateOnly === todayStr);
-            if(alreadyMarked) {
-                btn.disabled = true;
-                btn.innerText = "✓ Presenty Marked For Today";
-            } else {
-                btn.disabled = false;
-                btn.innerText = "🙋‍♂️ Mark Active Today";
-            }
-
-            historyContainer.innerHTML = '';
-            const myHistory = att.filter(a => a.username === currentUser.username).reverse();
-            if(myHistory.length === 0) { historyContainer.innerHTML = '<tr><td>No logs yet.</td></tr>'; return; }
-            myHistory.forEach(h => { historyContainer.innerHTML += `<tr><td>${h.timestamp}</td></tr>`; });
-        });
+        historyContainer.innerHTML = '';
+        const myHistory = att.filter(a => a.username === currentUser.username);
+        if(myHistory.length === 0) { historyContainer.innerHTML = '<tr><td>No logs yet.</td></tr>'; return; }
+        myHistory.forEach(h => { historyContainer.innerHTML += `<tr><td>${h.timestamp}</td></tr>`; });
     }
 
     function markAttendance() {
+        let att = JSON.parse(localStorage.getItem('attendance')) || [];
         const todayStr = new Date().toDateString();
         const timeStr = new Date().toLocaleString();
 
-        db.ref('attendance').push({ username: currentUser.username, timestamp: timeStr, dateOnly: todayStr });
+        att.unshift({ username: currentUser.username, timestamp: timeStr, dateOnly: todayStr });
+        localStorage.setItem('attendance', JSON.stringify(att));
         logActivity(`Member "${currentUser.username}" marked presence.`);
         alert("Attendance recorded!");
         loadUserPresenty();
@@ -569,21 +663,16 @@
 
     function loadUserRules() {
         const container = document.getElementById('user-rules-list');
-        db.ref('rules').once('value', snapshot => {
-            container.innerHTML = '';
-            if(!snapshot.exists()) { container.innerHTML = '<p>No rules.</p>'; return; }
-            snapshot.forEach(child => { container.innerHTML += `<div class="rule-card">${child.val()}</div>`; });
-        });
+        const rules = JSON.parse(localStorage.getItem('rules'));
+        container.innerHTML = rules.length === 0 ? '<p>No rules.</p>' : '';
+        rules.forEach(r => { container.innerHTML += `<div class="rule-card">${r}</div>`; });
     }
 
     function loadActivityFeed() {
         const box = document.getElementById('activity-feed-box');
-        db.ref('activities').limitToLast(30).once('value', snapshot => {
-            box.innerHTML = '';
-            let acts = [];
-            snapshot.forEach(child => { acts.unshift(child.val()); });
-            acts.forEach(a => { box.innerHTML += `<div class="activity-item">${a}</div>`; });
-        });
+        const acts = JSON.parse(localStorage.getItem('activities')) || [];
+        box.innerHTML = '';
+        acts.forEach(a => { box.innerHTML += `<div class="activity-item">${a}</div>`; });
     }
 </script>
 </body>
