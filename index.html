@@ -3,186 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow World & Management System</title>
+    <title>Attendance & Management System</title>
     <style>
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
-            /* Advanced Fluid iOS Mesh Gradient */
-            --bg: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd, #c2e9fb);
-            --bg-size: 400% 400%;
-            --card: rgba(255, 255, 255, 0.45);
-            --card-border: rgba(255, 255, 255, 0.7);
-            --text: #111827;
-            --text-secondary: #374151;
-            --border: rgba(255, 255, 255, 0.4);
-            --table-header: rgba(255, 255, 255, 0.6);
-            --list-bg: rgba(255, 255, 255, 0.3);
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #d1d5db;
+            --table-header: #f9fafb;
+            --list-bg: #f9fafb;
             --success: #10b981;
             --danger: #ef4444;
-            --rule-bg: rgba(254, 243, 199, 0.6);
-            --rule-border: rgba(252, 211, 77, 0.7);
+            --rule-bg: #fffbeb;
+            --rule-border: #fef3c7;
             --rule-text: #b45309;
-            --input-bg: rgba(255, 255, 255, 0.5);
         }
 
         [data-theme="dark"] {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            /* Cyberpunk Cinematic Dark Mesh Gradient */
-            --bg: linear-gradient(-45deg, #0f172a, #1e1b4b, #311042, #081426, #030712);
-            --bg-size: 400% 400%;
-            --card: rgba(15, 23, 42, 0.5);
-            --card-border: rgba(255, 255, 255, 0.15);
+            --bg: #0f172a;
+            --card: #1e293b;
             --text: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --border: rgba(255, 255, 255, 0.1);
-            --table-header: rgba(15, 23, 42, 0.7);
-            --list-bg: rgba(30, 41, 59, 0.5);
-            --rule-bg: rgba(69, 26, 3, 0.5);
-            --rule-border: rgba(120, 53, 15, 0.6);
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --table-header: #334155;
+            --list-bg: #1e293b;
+            --rule-bg: #451a03;
+            --rule-border: #78350f;
             --rule-text: #fde047;
-            --input-bg: rgba(15, 23, 42, 0.5);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
-        
-        body { 
-            background: var(--bg); 
-            background-size: var(--bg-size);
-            animation: fluidGradient 18s ease infinite;
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: var(--text); 
-            padding: 40px 20px; 
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background-color 0.2s, color 0.2s; }
+        body { background-color: var(--bg); color: var(--text); padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: var(--card); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2, h3 { margin-bottom: 20px; color: var(--primary); }
+        hr { margin: 20px 0; border: 0; border-top: 1px solid var(--border); }
 
-        /* Subtly moving background for dynamic mesh look */
-        @keyframes fluidGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        .theme-container { display: flex; justify-content: flex-end; max-width: 1000px; margin: 0 auto 15px auto; }
+        .theme-btn { background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; }
 
-        .theme-container { display: flex; justify-content: flex-end; max-width: 1000px; width: 100%; margin: 0 auto 20px auto; }
-        
-        /* Premium iOS Pill Toggle with increased contrast */
-        .theme-btn { 
-            background: var(--card); 
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            color: var(--text); 
-            border: 1px solid var(--card-border); 
-            padding: 10px 20px; 
-            border-radius: 30px; 
-            cursor: pointer; 
-            font-size: 14px; 
-            font-weight: 600; 
-            box-shadow: 0 4px 18px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .theme-btn:hover { transform: translateY(-1.5px); box-shadow: 0 6px 22px rgba(0,0,0,0.15); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; }
+        input[type="text"], input[type="password"], textarea { width: 100%; padding: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 6px; font-size: 16px; }
+        button { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        button:hover { background: var(--primary-hover); }
+        button.btn-danger { background: var(--danger); }
+        button.btn-success { background: var(--success); }
+        button:disabled { background: #4fad57; cursor: not-allowed; opacity: 0.6; }
 
-        /* True iPhone Glassmorphism Container with deep depth and vibrant contrast */
-        .container { 
-            max-width: 1000px; 
-            width: 100%;
-            margin: 0 auto; 
-            background: var(--card); 
-            backdrop-filter: blur(px) saturate(220%);
-            -webkit-backdrop-filter: blur(35px) saturate(220%);
-            padding: 40px; 
-            border-radius: 28px; 
-            border: 1px solid var(--card-border);
-            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.15), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.25); 
-        }
-
-        h2, h3 { margin-bottom: 24px; color: var(--text); font-weight: 700; letter-spacing: -0.9px; }
-        h2 { font-size: 34px; }
-        hr { margin: 25px 0; border: 0; border-top: 1px solid var(--border); }
-
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--text); opacity: 0.95; }
-        
-        /* Sleek Glass Inputs with textured background */
-        input[type="text"], input[type="password"], textarea { 
-            width: 100%; 
-            padding: 14px 16px; 
-            border: 1px solid var(--border); 
-            background: var(--input-bg); 
-            color: var(--text); 
-            border-radius: 14px; 
-            font-size: 16px; 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            outline: none;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
-        }
-        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4.5px rgba(79, 70, 229, 0.25); background: rgba(255, 255, 255, 0.65); }
-        [data-theme="dark"] input:focus, [data-theme="dark"] textarea:focus { background: rgba(15, 23, 42, 0.65); }
-
-        /* iOS Solid Accent Buttons with increased shadow */
-        button { 
-            background: var(--primary); 
-            color: white; 
-            border: none; 
-            padding: 14px 30px; 
-            border-radius: 14px; 
-            cursor: pointer; 
-            font-size: 16px; 
-            font-weight: 600; 
-            box-shadow: 0 5px 16px rgba(79, 70, 229, 0.35);
-        }
-        button:hover { background: var(--primary-hover); transform: translateY(-1.5px); box-shadow: 0 7px 24px rgba(79, 70, 229, 0.45); }
-        button:active { transform: translateY(0); }
-        button.btn-danger { background: var(--danger); box-shadow: 0 5px 16px rgba(239, 68, 68, 0.35); }
-        button.btn-danger:hover { background: #dc2626; box-shadow: 0 7px 24px rgba(239, 68, 68, 0.45); }
-        button.btn-success { background: var(--success); box-shadow: 0 5px 16px rgba(16, 185, 129, 0.35); }
-        button.btn-success:hover { background: #059669; box-shadow: 0 7px 24px rgba(16, 185, 129, 0.45); }
-        button:disabled { background: #9ca3af !important; cursor: not-allowed; opacity: 0.6; box-shadow: none !important; }
-
-        /* iOS Segmented Controls (Tabs) with enhanced contrast */
-        .nav-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 25px; background: rgba(0,0,0,0.08); padding: 7px; border-radius: 18px; border: none; }
-        [data-theme="dark"] .nav-tabs { background: rgba(255,255,255,0.08); }
-        
-        .tab-btn { background: transparent; color: var(--text-secondary); padding: 11px 22px; border-radius: 14px; border: none; font-size: 15px; cursor: pointer; font-weight: 600; flex: 1; text-align: center; min-width: 120px; }
-        .tab-btn:hover { color: var(--text); }
-        .tab-btn.active { background: #ffffff; color: #111827; box-shadow: 0 5px 14px rgba(0,0,0,0.1); }
-        [data-theme="dark"] .tab-btn.active { background: rgba(255,255,255,0.18); color: #ffffff; box-shadow: 0 5px 14px rgba(0,0,0,0.25); }
+        .nav-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+        .tab-btn { background: none; color: var(--text-secondary); padding: 8px 16px; border-radius: 4px; border: none; font-size: 16px; cursor: pointer; font-weight: 500; }
+        .tab-btn.active { background: var(--primary); color: white; }
 
         .panel { display: none; }
         .panel.active { display: block; }
 
-        /* Glass Tables with borders */
-        table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 20px; border-radius: 18px; overflow: hidden; background: rgba(255,255,255,0.2); border: 1px solid var(--border); }
-        [data-theme="dark"] table { background: rgba(0,0,0,0.2); }
-        th, td { padding: 18px; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background-color: var(--table-header); font-weight: 600; color: var(--text); }
-        tr:last-child td { border-bottom: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: var(--table-header); }
+        .list-item { background: var(--list-bg); padding: 15px; border-radius: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); border-left: 4px solid var(--primary); }
         
-        /* Premium Floating Glass Cards with true depth */
-        .list-item { background: var(--list-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 20px; border-radius: 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); border-left: 7px solid var(--primary); box-shadow: 0 5px 16px rgba(0,0,0,0.04); }
-        
-        .activity-box { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); color: #38bdf8; padding: 22px; border-radius: 20px; max-height: 280px; overflow-y: auto; font-family: 'Courier New', Courier, monospace; border: 1px solid rgba(255,255,255,0.06); }
-        .activity-item { margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 10px; font-size: 14px; color: #e2e8f0; }
-        .rule-card { background: var(--rule-bg); border: 1px solid var(--rule-border); padding: 20px; border-radius: 20px; margin-bottom: 16px; color: var(--rule-text); font-weight: 500; box-shadow: 0 5px 16px rgba(0,0,0,0.04); }
+        .activity-box { background: #1e293b; color: #f8fafc; padding: 15px; border-radius: 6px; max-height: 200px; overflow-y: auto; font-family: monospace; }
+        .activity-item { margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; font-size: 14px; }
+        .rule-card { background: var(--rule-bg); border: 1px solid var(--rule-border); padding: 15px; border-radius: 6px; margin-bottom: 10px; color: var(--rule-text); }
 
-        .flex-space { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .logout-btn { background: rgba(259, 255, 255, 0.25); color: var(--text); border: 1px solid var(--border); box-shadow: 0 5px 16px rgba(0,0,0,0.04); }
-        [data-theme="dark"] .logout-btn { background: rgba(255, 255, 255, 0.12); }
-        .logout-btn:hover { background: rgba(0, 0, 0, 0.08); }
-        [data-theme="dark"] .logout-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .flex-space { display: flex; justify-content: space-between; align-items: center; }
+        .logout-btn { background: #374151; color: white; }
     </style>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -307,60 +199,25 @@
 </div>
 
 <script>
-    // --- FIREBASE CONFIGURATION CODES ---
-    // !!! BHAAL YAHAN APNI WEB SDK WALI DETAILS DHAYAN SE PASTE KARNA !!!
+    // --- Firebase Configuration ---
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        databaseURL: "YOUR_DATABASE_URL",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "AIzaSyBNTnScEta2Xda_S7mUfw3IXoI7A-0IxsI",
+        authDomain: "shadow-world-7c3d1.firebaseapp.com",
+        databaseURL: "https://shadow-world-7c3d1-default-rtdb.firebaseio.com",
+        projectId: "shadow-world-7c3d1",
+        storageBucket: "shadow-world-7c3d1.firebasestorage.app",
+        messagingSenderId: "1045120071491",
+        appId: "1:1045120071491:web:5d7b649724fd39ff8d61f6",
+        measurementId: "G-V1EP13TV5N"
     };
 
-    // Firebase Initialization
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Global App States 
-    let usersList = {};
-    let trashList = {};
-    let requestsList = {};
-    let attendanceList = [];
-    let rulesList = [];
-    let activitiesList = [];
     let currentUser = null;
 
-    // --- LIVE SYNC DATABASE HOOKS ---
-    function initFirebaseLiveSync() {
-        db.ref('users').on('value', snapshot => { usersList = snapshot.val() || {}; loadAllMembers(); });
-        db.ref('deletedUsers').on('value', snapshot => { trashList = snapshot.val() || {}; loadDeletedMembers(); });
-        db.ref('requests').on('value', snapshot => { requestsList = snapshot.val() || {}; loadRequests(); });
-        
-        db.ref('rules').on('value', snapshot => {
-            const data = snapshot.val();
-            // Object map to dynamic elements
-            rulesList = data ? Object.values(data) : [];
-            loadAdminRules();
-            loadUserRules();
-        });
-
-        db.ref('activities').on('value', snapshot => {
-            const data = snapshot.val();
-            activitiesList = data ? Object.values(data).reverse() : [];
-            loadActivityFeed();
-        });
-
-        db.ref('attendance').on('value', snapshot => {
-            const data = snapshot.val();
-            attendanceList = data ? Object.values(data) : [];
-            loadAdminPresenty();
-            if(currentUser && currentUser.role === 'user') loadUserPresenty();
-        });
-    }
-
-    // --- UI/Theme Mechanics ---
+    // --- Theme Logic ---
     function initTheme() {
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
@@ -376,7 +233,6 @@
     }
 
     initTheme();
-    initFirebaseLiveSync();
 
     function switchAuthTab(type) {
         document.getElementById('tab-login').classList.remove('active');
@@ -404,31 +260,40 @@
 
         if(!u || !p) { alert("Please fill all fields"); return; }
 
-        // Core Admins Root Access
         if((u === 'sahil' || u === 'taskeen') && p === 'saheen') {
             currentUser = { username: u, role: 'admin' };
             launchDashboard();
             return;
         }
 
-        // Live Realtime Check
-        let matchedUser = Object.values(usersList).find(user => user.username === u && user.password === p);
+        db.ref('users').once('value', snapshot => {
+            let users = [];
+            snapshot.forEach(child => { users.push(child.val()); });
+            let found = users.find(user => user.username === u && user.password === p);
 
-        if(matchedUser) {
-            currentUser = { username: u, role: 'user' };
-            launchDashboard();
-        } else {
-            let reqPending = Object.values(requestsList).some(r => r.username === u);
-            let userTrashed = Object.values(trashList).some(d => d.username === u);
-            
-            if(reqPending) {
-                alert("Your request is still pending admin approval!");
-            } else if (userTrashed) {
-                alert("Your account has been deactivated by the Admin.");
+            if(found) {
+                currentUser = { username: u, role: 'user' };
+                launchDashboard();
             } else {
-                alert("Invalid Credentials.");
+                db.ref('requests').once('value', reqSnap => {
+                    let reqs = [];
+                    reqSnap.forEach(c => { reqs.push(c.val()); });
+
+                    db.ref('deletedUsers').once('value', delSnap => {
+                        let deletedUsers = [];
+                        delSnap.forEach(c => { deletedUsers.push(c.val()); });
+
+                        if(reqs.some(r => r.username === u)) {
+                            alert("Your request is still pending admin approval!");
+                        } else if (deletedUsers.some(d => d.username === u)) {
+                            alert("Your account has been deactivated by the Admin.");
+                        } else {
+                            alert("Invalid Credentials.");
+                        }
+                    });
+                });
             }
-        }
+        });
     }
 
     function handleRegister() {
@@ -438,19 +303,24 @@
         if(!u || !p) { alert("Please fill all fields"); return; }
         if(u === 'sahil' || u === 'taskeen') { alert("Reserved username."); return; }
 
-        let userTaken = Object.values(usersList).some(x => x.username === u) || Object.values(requestsList).some(x => x.username === u);
+        db.ref('users').once('value', snap => {
+            let users = []; snap.forEach(c => { users.push(c.val()); });
+            db.ref('requests').once('value', reqSnap => {
+                let reqs = []; reqSnap.forEach(c => { reqs.push(c.val()); });
 
-        if(userTaken) {
-            alert("Username already taken!");
-            return;
-        }
+                if(users.some(x=>x.username===u) || reqs.some(x=>x.username===u)) {
+                    alert("Username already taken!");
+                    return;
+                }
 
-        db.ref('requests').push({username: u, password: p}).then(() => {
-            logActivity(`New request from: "${u}"`);
-            alert("Request sent to Admin!");
-            document.getElementById('reg-username').value = '';
-            document.getElementById('reg-password').value = '';
-            switchAuthTab('login');
+                db.ref('requests').push({username: u, password: p});
+                logActivity(`New request from: "${u}"`);
+                alert("Request sent to Admin!");
+                
+                document.getElementById('reg-username').value = '';
+                document.getElementById('reg-password').value = '';
+                switchAuthTab('login');
+            });
         });
     }
 
@@ -515,98 +385,100 @@
 
     function loadRequests() {
         const container = document.getElementById('requests-list');
-        container.innerHTML = '';
-        const keys = Object.keys(requestsList);
-        if(keys.length === 0) { container.innerHTML = '<p>No pending requests.</p>'; return; }
-        
-        keys.forEach(key => {
-            let r = requestsList[key];
-            container.innerHTML += `<div class="list-item"><span><strong>${r.username}</strong></span><div><button onclick="actionRequest('${key}', 'accept')" class="btn-success" style="margin-right:5px;">Accept</button><button onclick="actionRequest('${key}', 'reject')" class="btn-danger">Reject</button></div></div>`;
+        db.ref('requests').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) { container.innerHTML = '<p>No pending requests.</p>'; return; }
+            snapshot.forEach(child => {
+                let r = child.val();
+                let key = child.key;
+                container.innerHTML += `<div class="list-item"><span><strong>${r.username}</strong></span><div><button onclick="actionRequest('${key}', 'accept')" class="btn-success" style="margin-right:5px;">Accept</button><button onclick="actionRequest('${key}', 'reject')" class="btn-danger">Reject</button></div></div>`;
+            });
         });
     }
 
     function actionRequest(key, action) {
-        let targetUser = requestsList[key];
-        if(!targetUser) return;
-
-        if(action === 'accept') {
-            db.ref('users').push(targetUser);
-            logActivity(`Approved: "${targetUser.username}"`);
-        } else {
-            logActivity(`Rejected: "${targetUser.username}"`);
-        }
-        db.ref(`requests/${key}`).remove();
+        db.ref('requests/' + key).once('value', snapshot => {
+            let targetUser = snapshot.val();
+            if(action === 'accept') {
+                db.ref('users').push(targetUser);
+                logActivity(`Approved: "${targetUser.username}"`);
+            } else {
+                logActivity(`Rejected: "${targetUser.username}"`);
+            }
+            db.ref('requests/' + key).remove();
+            loadRequests();
+        });
     }
 
     function loadAllMembers() {
         const container = document.getElementById('all-members-list');
-        if(!container) return;
-        container.innerHTML = '';
-        const keys = Object.keys(usersList);
-        if(keys.length === 0) { container.innerHTML = '<p>No registered members found.</p>'; return; }
-        
-        keys.forEach(key => {
-            let u = usersList[key];
-            container.innerHTML += `
-                <div class="list-item">
-                    <span><strong>${u.username}</strong></span>
-                    <button class="btn-danger" onclick="temporaryDeleteMember('${key}')">Delete Member</button>
-                </div>`;
+        db.ref('users').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) { container.innerHTML = '<p>No registered members found.</p>'; return; }
+            snapshot.forEach(child => {
+                let u = child.val();
+                let key = child.key;
+                container.innerHTML += `
+                    <div class="list-item">
+                        <span><strong>${u.username}</strong></span>
+                        <button class="btn-danger" onclick="temporaryDeleteMember('${key}')">Delete Member</button>
+                    </div>`;
+            });
         });
     }
 
     function temporaryDeleteMember(key) {
         if(!confirm("Are you sure you want to delete this member? (They will move to Restore List)")) return;
         
-        let targetUser = usersList[key];
-        if(!targetUser) return;
-
-        db.ref('deletedUsers').push(targetUser).then(() => {
-            db.ref(`users/${key}`).remove();
+        db.ref('users/' + key).once('value', snapshot => {
+            let targetUser = snapshot.val();
+            db.ref('deletedUsers').push(targetUser);
+            db.ref('users/' + key).remove();
             logActivity(`Moved to Trash: "${targetUser.username}"`);
+            loadAllMembers();
         });
     }
 
     function loadDeletedMembers() {
         const container = document.getElementById('deleted-members-list');
-        if(!container) return;
-        container.innerHTML = '';
-        const keys = Object.keys(trashList);
-        if(keys.length === 0) { container.innerHTML = '<p>Trash is empty. No members to restore.</p>'; return; }
-        
-        keys.forEach(key => {
-            let u = trashList[key];
-            container.innerHTML += `
-                <div class="list-item">
-                    <span><strong>${u.username}</strong></span>
-                    <div>
-                        <button class="btn-success" style="margin-right:5px;" onclick="restoreMember('${key}')">Restore</button>
-                        <button class="btn-danger" onclick="permanentDeleteMember('${key}')">Delete Permanently</button>
-                    </div>
-                </div>`;
+        db.ref('deletedUsers').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) { container.innerHTML = '<p>Trash is empty. No members to restore.</p>'; return; }
+            snapshot.forEach(child => {
+                let u = child.val();
+                let key = child.key;
+                container.innerHTML += `
+                    <div class="list-item">
+                        <span><strong>${u.username}</strong></span>
+                        <div>
+                            <button class="btn-success" style="margin-right:5px;" onclick="restoreMember('${key}')">Restore</button>
+                            <button class="btn-danger" onclick="permanentDeleteMember('${key}')">Delete Permanently</button>
+                        </div>
+                    </div>`;
+            });
         });
     }
 
     function restoreMember(key) {
-        let targetUser = trashList[key];
-        if(!targetUser) return;
-
-        db.ref('users').push(targetUser).then(() => {
-            db.ref(`deletedUsers/${key}`).remove();
+        db.ref('deletedUsers/' + key).once('value', snapshot => {
+            let targetUser = snapshot.val();
+            db.ref('users').push(targetUser);
+            db.ref('deletedUsers/' + key).remove();
             logActivity(`Restored member: "${targetUser.username}"`);
             alert(`"${targetUser.username}" has been restored successfully!`);
+            loadDeletedMembers();
         });
     }
 
     function permanentDeleteMember(key) {
-        if(!confirm("Warning! This will permanently delete the user. This action cannot be undone. Proceed?")) return;
+        if(!confirm("Warning! This will permanently delete the user. Proceed?")) return;
         
-        let targetUser = trashList[key];
-        if(!targetUser) return;
-
-        db.ref(`deletedUsers/${key}`).remove().then(() => {
+        db.ref('deletedUsers/' + key).once('value', snapshot => {
+            let targetUser = snapshot.val();
+            db.ref('deletedUsers/' + key).remove();
             logActivity(`Permanently deleted: "${targetUser.username}"`);
             alert(`"${targetUser.username}" deleted forever.`);
+            loadDeletedMembers();
         });
     }
 
@@ -615,37 +487,32 @@
         const p = document.getElementById('direct-password').value.trim();
         if(!u || !p) { alert("Fill all fields"); return; }
         
-        let userExists = Object.values(usersList).some(x => x.username === u);
-        if(userExists) { alert("Username already exists!"); return; }
-        
-        db.ref('users').push({username: u, password: p}).then(() => {
-            logActivity(`Directly added: "${u}"`);
-            alert("Member Added!");
-            document.getElementById('direct-username').value = '';
-            document.getElementById('direct-password').value = '';
-        });
+        db.ref('users').push({username: u, password: p});
+        logActivity(`Directly added: "${u}"`);
+        alert("Member Added!");
+        document.getElementById('direct-username').value = '';
+        document.getElementById('direct-password').value = '';
     }
 
     function loadAdminPresenty() {
         const container = document.getElementById('admin-presenty-list');
-        if(!container) return;
-        container.innerHTML = attendanceList.length === 0 ? '<tr><td colspan="2">No records.</td></tr>' : '';
-        
-        // Dynamic dynamic reverse list for sorting latest on top
-        [...attendanceList].reverse().forEach(a => { 
-            container.innerHTML += `<tr><td><strong>${a.username}</strong></td><td>${a.timestamp}</td></tr>`; 
+        db.ref('attendance').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) { container.innerHTML = '<tr><td colspan="2">No records.</td></tr>'; return; }
+            
+            let arr = [];
+            snapshot.forEach(child => { arr.unshift(child.val()); });
+            arr.forEach(a => { container.innerHTML += `<tr><td><strong>${a.username}</strong></td><td>${a.timestamp}</td></tr>`; });
         });
     }
 
     function loadAdminRules() {
         const container = document.getElementById('admin-rules-list');
-        if(!container) return;
-        container.innerHTML = '';
-        
         db.ref('rules').once('value', snapshot => {
-            const rulesObj = snapshot.val() || {};
-            Object.keys(rulesObj).forEach(key => {
-                container.innerHTML += `<div class="list-item"><span>${rulesObj[key]}</span><button class="btn-danger" onclick="deleteRule('${key}')">Delete</button></div>`;
+            container.innerHTML = '';
+            if(!snapshot.exists()) return;
+            snapshot.forEach(child => {
+                container.innerHTML += `<div class="list-item"><span>${child.val()}</span><button class="btn-danger" onclick="deleteRule('${child.key}')">Delete</button></div>`;
             });
         });
     }
@@ -653,64 +520,70 @@
     function addRule() {
         const txt = document.getElementById('new-rule-text').value.trim();
         if(!txt) return;
-        
-        db.ref('rules').push(txt).then(() => {
-            document.getElementById('new-rule-text').value = '';
-            logActivity(`Added new rule`);
-        });
+        db.ref('rules').push(txt);
+        document.getElementById('new-rule-text').value = '';
+        logActivity(`Added new rule`);
+        loadAdminRules();
     }
 
     function deleteRule(key) {
-        db.ref(`rules/${key}`).remove().then(() => {
-            logActivity(`Deleted a rule`);
-            loadAdminRules();
-        });
+        db.ref('rules/' + key).remove();
+        logActivity(`Deleted a rule`);
+        loadAdminRules();
     }
 
     function loadUserPresenty() {
         const btn = document.getElementById('mark-presenty-btn');
         const historyContainer = document.getElementById('user-presenty-history');
-        if(!historyContainer) return;
-        
         const todayStr = new Date().toDateString();
-        const alreadyMarked = attendanceList.some(a => a.username === currentUser.username && a.dateOnly === todayStr);
-        
-        if(alreadyMarked) {
-            btn.disabled = true;
-            btn.innerText = "✓ Presenty Marked For Today";
-        } else {
-            btn.disabled = false;
-            btn.innerText = "🙋‍♂️ Mark Active Today";
-        }
 
-        historyContainer.innerHTML = '';
-        const myHistory = attendanceList.filter(a => a.username === currentUser.username).reverse();
-        if(myHistory.length === 0) { historyContainer.innerHTML = '<tr><td>No logs yet.</td></tr>'; return; }
-        myHistory.forEach(h => { historyContainer.innerHTML += `<tr><td>${h.timestamp}</td></tr>`; });
+        db.ref('attendance').once('value', snapshot => {
+            let att = [];
+            snapshot.forEach(child => { att.push(child.val()); });
+
+            const alreadyMarked = att.some(a => a.username === currentUser.username && a.dateOnly === todayStr);
+            if(alreadyMarked) {
+                btn.disabled = true;
+                btn.innerText = "✓ Presenty Marked For Today";
+            } else {
+                btn.disabled = false;
+                btn.innerText = "🙋‍♂️ Mark Active Today";
+            }
+
+            historyContainer.innerHTML = '';
+            const myHistory = att.filter(a => a.username === currentUser.username).reverse();
+            if(myHistory.length === 0) { historyContainer.innerHTML = '<tr><td>No logs yet.</td></tr>'; return; }
+            myHistory.forEach(h => { historyContainer.innerHTML += `<tr><td>${h.timestamp}</td></tr>`; });
+        });
     }
 
     function markAttendance() {
         const todayStr = new Date().toDateString();
         const timeStr = new Date().toLocaleString();
 
-        db.ref('attendance').push({ username: currentUser.username, timestamp: timeStr, dateOnly: todayStr }).then(() => {
-            logActivity(`Member "${currentUser.username}" marked presence.`);
-            alert("Attendance recorded!");
-        });
+        db.ref('attendance').push({ username: currentUser.username, timestamp: timeStr, dateOnly: todayStr });
+        logActivity(`Member "${currentUser.username}" marked presence.`);
+        alert("Attendance recorded!");
+        loadUserPresenty();
     }
 
     function loadUserRules() {
         const container = document.getElementById('user-rules-list');
-        if(!container) return;
-        container.innerHTML = rulesList.length === 0 ? '<p>No rules.</p>' : '';
-        rulesList.forEach(r => { container.innerHTML += `<div class=\"rule-card\">${r}</div>`; });
+        db.ref('rules').once('value', snapshot => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) { container.innerHTML = '<p>No rules.</p>'; return; }
+            snapshot.forEach(child => { container.innerHTML += `<div class="rule-card">${child.val()}</div>`; });
+        });
     }
 
     function loadActivityFeed() {
         const box = document.getElementById('activity-feed-box');
-        if(!box) return;
-        box.innerHTML = '';
-        activitiesList.forEach(a => { box.innerHTML += `<div class=\"activity-item\">${a}</div>`; });
+        db.ref('activities').limitToLast(30).once('value', snapshot => {
+            box.innerHTML = '';
+            let acts = [];
+            snapshot.forEach(child => { acts.unshift(child.val()); });
+            acts.forEach(a => { box.innerHTML += `<div class="activity-item">${a}</div>`; });
+        });
     }
 </script>
 </body>
